@@ -4,29 +4,37 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
 
 /**
- * Raw brand palette.
+ * Raw brand palette, sampled from the app mockup.
  *
  * Never reference these from UI code - always go through the semantic tokens in
  * [TicTacColors], otherwise light/dark switching stops working.
  */
 internal object TicTacPalette {
-    val Ink: Color = Color(0xFF05050D)
-    val InkSoft: Color = Color(0xFF101019)
-    val InkMuted: Color = Color(0xFF1B1B26)
-    val OffWhite: Color = Color(0xFFF2F0EC)
-    val Paper: Color = Color(0xFFFBF7F0)
-    val PaperPure: Color = Color(0xFFFFFFFF)
-    val PaperMuted: Color = Color(0xFFF1EAE0)
-    val Beige: Color = Color(0xFF7E6F6F)
-    val BeigeLight: Color = Color(0xFFA79B9B)
-    val BeigeSand: Color = Color(0xFFC9BDB1)
-    val Slate: Color = Color(0xFF5C5252)
-    val Orange: Color = Color(0xFFE59106)
-    val OrangeDeep: Color = Color(0xFFC97A04)
-    val Lime: Color = Color(0xFFCBF3A0)
-    val LimeDeep: Color = Color(0xFF4E8A1F)
-    val Coral: Color = Color(0xFFFF6B5E)
-    val CoralDeep: Color = Color(0xFFC0392B)
+    /* Dark ramp - near-black with a faint cool tint */
+    val Charcoal: Color = Color(0xFF121414)
+    val Graphite: Color = Color(0xFF1F2121)
+    val Gunmetal: Color = Color(0xFF262929)
+    val Steel: Color = Color(0xFF393939)
+
+    /* Light ramp */
+    val Cloud: Color = Color(0xFFF4F6F6)
+    val CloudPure: Color = Color(0xFFFFFFFF)
+    val CloudMuted: Color = Color(0xFFE6EAEA)
+    val CloudLine: Color = Color(0xFFC9D0D0)
+
+    /* Content - MistDim is a touch lighter than the mockup so secondary
+     * text still clears 4.5:1 on the elevated Gunmetal surfaces. */
+    val Mist: Color = Color(0xFFCFDFE0)
+    val MistDim: Color = Color(0xFF8D9797)
+    val SlateDim: Color = Color(0xFF5A6363)
+
+    /* Brand green - the primary action */
+    val Green: Color = Color(0xFF4B9760)
+    val GreenDeep: Color = Color(0xFF3A7F4E)
+
+    /* Status */
+    val Red: Color = Color(0xFFD2564C)
+    val RedDeep: Color = Color(0xFFB4443A)
 }
 
 /**
@@ -65,48 +73,50 @@ public interface TicTacColors {
     }
 }
 
+/** The mockup palette: near-black ground, mist content, green action. */
 @Immutable
 public object TicTacColorsDark : TicTacColors {
-    override val background: Color = TicTacPalette.Ink
-    override val surface: Color = TicTacPalette.InkSoft
-    override val surfaceVariant: Color = TicTacPalette.InkMuted
+    override val background: Color = TicTacPalette.Charcoal
+    override val surface: Color = TicTacPalette.Graphite
+    override val surfaceVariant: Color = TicTacPalette.Gunmetal
 
-    override val onBackground: Color = TicTacPalette.OffWhite
-    override val onSurface: Color = TicTacPalette.OffWhite
-    override val onSurfaceVariant: Color = TicTacPalette.BeigeLight
-    override val outline: Color = TicTacPalette.Beige
+    override val onBackground: Color = TicTacPalette.Mist
+    override val onSurface: Color = TicTacPalette.Mist
+    override val onSurfaceVariant: Color = TicTacPalette.MistDim
+    override val outline: Color = TicTacPalette.Steel
 
-    override val accent: Color = TicTacPalette.Orange
-    override val onAccent: Color = TicTacPalette.Ink
-    override val positive: Color = TicTacPalette.Lime
-    override val negative: Color = TicTacPalette.Coral
+    override val accent: Color = TicTacPalette.Green
+    override val onAccent: Color = TicTacPalette.CloudPure
+    override val positive: Color = TicTacPalette.Green
+    override val negative: Color = TicTacPalette.Red
 
-    override val markX: Color = TicTacPalette.Orange
-    override val markO: Color = TicTacPalette.Lime
-    override val boardGrid: Color = TicTacPalette.Beige
-    override val boardCell: Color = TicTacPalette.InkSoft
-    override val winHighlight: Color = TicTacPalette.Lime
+    override val markX: Color = TicTacPalette.Mist
+    override val markO: Color = TicTacPalette.Green
+    override val boardGrid: Color = TicTacPalette.Steel
+    override val boardCell: Color = TicTacPalette.Gunmetal
+    override val winHighlight: Color = TicTacPalette.Green
 }
 
+/** Same roles inverted, with the green darkened to keep white legible on it. */
 @Immutable
 public object TicTacColorsLight : TicTacColors {
-    override val background: Color = TicTacPalette.Paper
-    override val surface: Color = TicTacPalette.PaperPure
-    override val surfaceVariant: Color = TicTacPalette.PaperMuted
+    override val background: Color = TicTacPalette.Cloud
+    override val surface: Color = TicTacPalette.CloudPure
+    override val surfaceVariant: Color = TicTacPalette.CloudMuted
 
-    override val onBackground: Color = TicTacPalette.Ink
-    override val onSurface: Color = TicTacPalette.Ink
-    override val onSurfaceVariant: Color = TicTacPalette.Slate
-    override val outline: Color = TicTacPalette.BeigeSand
+    override val onBackground: Color = TicTacPalette.Charcoal
+    override val onSurface: Color = TicTacPalette.Charcoal
+    override val onSurfaceVariant: Color = TicTacPalette.SlateDim
+    override val outline: Color = TicTacPalette.CloudLine
 
-    override val accent: Color = TicTacPalette.OrangeDeep
-    override val onAccent: Color = TicTacPalette.PaperPure
-    override val positive: Color = TicTacPalette.LimeDeep
-    override val negative: Color = TicTacPalette.CoralDeep
+    override val accent: Color = TicTacPalette.GreenDeep
+    override val onAccent: Color = TicTacPalette.CloudPure
+    override val positive: Color = TicTacPalette.GreenDeep
+    override val negative: Color = TicTacPalette.RedDeep
 
-    override val markX: Color = TicTacPalette.OrangeDeep
-    override val markO: Color = TicTacPalette.LimeDeep
-    override val boardGrid: Color = TicTacPalette.BeigeSand
-    override val boardCell: Color = TicTacPalette.PaperPure
-    override val winHighlight: Color = TicTacPalette.Lime
+    override val markX: Color = TicTacPalette.Charcoal
+    override val markO: Color = TicTacPalette.GreenDeep
+    override val boardGrid: Color = TicTacPalette.CloudLine
+    override val boardCell: Color = TicTacPalette.CloudPure
+    override val winHighlight: Color = TicTacPalette.GreenDeep
 }

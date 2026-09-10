@@ -54,11 +54,12 @@ public data class TicTacTypography(
         lineHeight = 16.sp,
         letterSpacing = 0.5.sp,
     ),
+    /* 20sp SemiBold keeps white-on-green a WCAG "large text" pair. */
     val button: TextStyle = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.SemiBold,
-        fontSize = 16.sp,
-        lineHeight = 20.sp,
+        fontSize = 20.sp,
+        lineHeight = 24.sp,
         letterSpacing = 0.2.sp,
     ),
     /** The X / O glyph drawn inside a board cell. */

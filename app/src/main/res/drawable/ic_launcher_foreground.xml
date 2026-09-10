@@ -7,19 +7,19 @@
     <!-- board grid -->
     <path
         android:pathData="M46,30 L46,78 M62,30 L62,78 M30,46 L78,46 M30,62 L78,62"
-        android:strokeColor="#7E6F6F"
+        android:strokeColor="#393939"
         android:strokeWidth="3"
         android:strokeLineCap="round" />
     <!-- X -->
     <path
         android:pathData="M33,33 L43,43 M43,33 L33,43"
-        android:strokeColor="#E59106"
+        android:strokeColor="#CFDFE0"
         android:strokeWidth="4.5"
         android:strokeLineCap="round" />
     <!-- O -->
     <path
         android:pathData="M64,70 a6,6 0 1,1 12,0 a6,6 0 1,1 -12,0"
-        android:strokeColor="#CBF3A0"
+        android:strokeColor="#4B9760"
         android:strokeWidth="4.5"
         android:strokeLineCap="round" />
 </vector>
