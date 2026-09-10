@@ -14,7 +14,7 @@ internal object TicTacPalette {
     val Charcoal: Color = Color(0xFF121414)
     val Graphite: Color = Color(0xFF1F2121)
     val Gunmetal: Color = Color(0xFF262929)
-    val Steel: Color = Color(0xFF393939)
+    val Steel: Color = Color(0xFF252929)
 
     /* Light ramp */
     val Cloud: Color = Color(0xFFF4F6F6)
