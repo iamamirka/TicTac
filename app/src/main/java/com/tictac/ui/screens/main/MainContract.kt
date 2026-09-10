@@ -1,29 +1,32 @@
 package com.tictac.ui.screens.main
 
 import androidx.compose.runtime.Immutable
-import com.tictac.domain.model.GameBoard
-import com.tictac.domain.model.GameResult
-import com.tictac.domain.model.Mark
+import com.tictac.domain.model.BotDifficulty
+import com.tictac.domain.model.GameMode
+import com.tictac.ui.model.BotDifficultyUi
+import com.tictac.ui.model.GameModeUi
 
 @Immutable
 internal data class MainUiState(
-    val board: GameBoard = GameBoard(),
-    val currentTurn: Mark = Mark.X,
-    val result: GameResult = GameResult.InProgress,
-    val scoreX: Int = 0,
-    val scoreO: Int = 0,
+    val gameMode: GameModeUi = GameModeUi.WithBot,
+    val botDifficulty: BotDifficultyUi = BotDifficultyUi.EasyMode,
 ) {
-    val isFinished: Boolean get() = result != GameResult.InProgress
-
-    val winningLine: List<Int> get() = (result as? GameResult.Win)?.line.orEmpty()
+    /** Difficulty only applies when a bot is playing. */
+    val isDifficultyEnabled: Boolean get() = gameMode == GameModeUi.WithBot
 }
 
 internal sealed interface MainIntent {
-    data class CellClicked(val index: Int) : MainIntent
-    data object NewGameClicked : MainIntent
-    data object ResetScoreClicked : MainIntent
+    data class GameModeSelected(val gameMode: GameModeUi) : MainIntent
+    data class DifficultySelected(val botDifficulty: BotDifficultyUi) : MainIntent
+    data object SettingsClicked : MainIntent
+    data class StartGame(val uiState: MainUiState) : MainIntent
 }
 
 internal sealed interface MainEffect {
-    data class ShowMessage(val text: String) : MainEffect
+    data class NavigateToGame(
+        val gameMode: GameMode,
+        val botDifficulty: BotDifficulty,
+    ) : MainEffect
+
+    data object NavigateToSettings : MainEffect
 }
