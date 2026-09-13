@@ -26,11 +26,13 @@ import com.tictac.R
 import com.tictac.core.ui.theme.TicTacTheme
 import com.tictac.domain.model.BotDifficulty
 import com.tictac.domain.model.GameMode
+import com.tictac.ui.components.FieldSizeControl
 import com.tictac.ui.components.TicTacButton
 import com.tictac.ui.components.TicTacButtonMode
 import com.tictac.ui.components.TicTacButtonSize
 import com.tictac.ui.components.TicTacSegmentedControl
 import com.tictac.ui.model.BotDifficultyUi
+import com.tictac.ui.model.FieldSizeUi
 import com.tictac.ui.model.GameModeUi
 
 @Composable
@@ -80,7 +82,7 @@ internal fun MainScreenContent(
                     .padding(innerPadding)
                     .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Top),
             ) {
                 TicTacSegmentedControl(
                     options = GameModeUi.entries,
@@ -96,14 +98,18 @@ internal fun MainScreenContent(
                     modifier = Modifier.controlWidth(),
                 )
 
-                TicTacButton(
-                    text = "Start game",
-                    onClick = { onIntent(MainIntent.StartGame(state)) },
+                SectionLabel(text = "Field size")
+                FieldSizeControl(
+                    options = FieldSizeUi.entries,
+                    selected = state.fieldSize,
+                    onSelect = { onIntent(MainIntent.FieldSizeSelected(it)) },
+                    modifier = Modifier.controlWidth(),
                 )
 
                 TicTacButton(
-                    text = "Settings",
-                    onClick = { onIntent(MainIntent.SettingsClicked) },
+                    text = "Start game",
+                    onClick = { onIntent(MainIntent.StartGame(state)) },
+                    modifier = Modifier.fillMaxWidth()
                 )
             }
         },
@@ -135,7 +141,7 @@ private fun TopBar(
         Text(
             text = "Game",
             style = TicTacTheme.typography.titleMedium,
-            color = TicTacTheme.colors.onSurfaceVariant,
+            color = TicTacTheme.colors.surface,
         )
         Spacer(modifier = Modifier.weight(1f))
         TicTacButton(
@@ -172,6 +178,7 @@ private fun MainScreenWithBotPreview() {
             state = MainUiState(
                 gameMode = GameModeUi.WithBot,
                 botDifficulty = BotDifficultyUi.HardMode,
+                fieldSize = FieldSizeUi.Size9,
             ),
             onIntent = {},
             onNavigateToSettings = {}

@@ -12,6 +12,7 @@ internal class MainViewModel @Inject constructor() :
         when (intent) {
             is MainIntent.GameModeSelected -> updateState { copy(gameMode = intent.gameMode) }
             is MainIntent.DifficultySelected -> updateState { copy(botDifficulty = intent.botDifficulty) }
+            is MainIntent.FieldSizeSelected -> updateState { copy(fieldSize = intent.fieldSize) }
             MainIntent.SettingsClicked -> handleEffect(MainEffect.NavigateToSettings)
             is MainIntent.StartGame -> onStartGame(intent.uiState)
         }
