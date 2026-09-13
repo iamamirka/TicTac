@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -22,18 +23,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.tictac.R
 import com.tictac.core.ui.theme.TicTacTheme
 import com.tictac.domain.model.GameBoard
 import com.tictac.domain.model.GameResult
 import com.tictac.domain.model.Mark
 import com.tictac.ui.components.TicTacBoardCell
 import com.tictac.ui.components.TicTacButton
+import com.tictac.ui.components.TicTacButtonMode
+import com.tictac.ui.components.TicTacButtonSize
 
 @Composable
 internal fun GameScreen(
@@ -71,49 +76,48 @@ internal fun GameScreenContent(
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
-    val colors = TicTacTheme.colors
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .background(colors.background),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
-        ) {
-            Text(
-                text = "TicTac",
-                style = TicTacTheme.typography.display,
-                color = colors.onBackground,
+    Scaffold(
+        topBar = { TopBar(onNavigateToSettings = {}) },
+        content = { innerPadding ->
+            Column(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+                    .padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
+            ) {
+                Text(
+                    text = "TicTac",
+                    style = TicTacTheme.typography.display,
+                    color = TicTacTheme.colors.onBackground,
+                )
+
+                ScoreRow(
+                    scoreX = state.scoreX,
+                    scoreO = state.scoreO,
+                    onResetScore = { onIntent(GameIntent.ResetScoreClicked) },
+                )
+
+                StatusLine(state = state)
+
+                Board(
+                    state = state,
+                    onCellClick = { index -> onIntent(GameIntent.CellClicked(index)) },
+                )
+
+                TicTacButton(
+                    text = if (state.isFinished) "New game" else "Restart",
+                    onClick = { onIntent(GameIntent.NewGameClicked) },
+                )
+            }
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
             )
-
-            ScoreRow(
-                scoreX = state.scoreX,
-                scoreO = state.scoreO,
-                onResetScore = { onIntent(GameIntent.ResetScoreClicked) },
-            )
-
-            StatusLine(state = state)
-
-            Board(
-                state = state,
-                onCellClick = { index -> onIntent(GameIntent.CellClicked(index)) },
-            )
-
-            TicTacButton(
-                text = if (state.isFinished) "New game" else "Restart",
-                onClick = { onIntent(GameIntent.NewGameClicked) },
-            )
-        }
-
-        SnackbarHost(
-            hostState = snackbarHostState,
-            modifier = Modifier.align(Alignment.BottomCenter),
-        )
-    }
+        },
+    )
 }
 
 @Composable
@@ -179,6 +183,43 @@ private fun StatusLine(
         color = color,
         modifier = modifier,
     )
+}
+
+@Composable
+private fun TopBar(
+    onNavigateToSettings: () -> Unit,
+) {
+    // Box, not a Row with weighted spacers: the coin button and the settings button
+    // have different widths, so equal spacers would centre the title between them
+    // rather than on the screen.
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp)
+    ) {
+        Text(
+            text = "Game",
+            style = TicTacTheme.typography.titleMedium,
+            color = TicTacTheme.colors.surface,
+        )
+        TicTacButton(
+            text = "100",
+            leadingIcon = painterResource(R.drawable.ic_coin1x_16),
+            size = TicTacButtonSize.S,
+            mode = TicTacButtonMode.Secondary,
+            onClick = {},
+            modifier = Modifier.align(Alignment.CenterStart),
+        )
+        TicTacButton(
+            icon = painterResource(R.drawable.ic_settings_24),
+            contentDescription = "Settings",
+            size = TicTacButtonSize.S,
+            mode = TicTacButtonMode.Secondary,
+            onClick = onNavigateToSettings,
+            modifier = Modifier.align(Alignment.CenterEnd),
+        )
+    }
 }
 
 @Composable
