@@ -32,6 +32,11 @@ internal object TicTacPalette {
     val Green: Color = Color(0xFF4B9760)
     val GreenDeep: Color = Color(0xFF3A7F4E)
 
+    /* Brand blue - CobaltBright is the same hue lifted for dark surfaces, where
+     * Cobalt itself only reaches 2.7:1 on a board cell. */
+    val Cobalt: Color = Color(0xFF376AB8)
+    val CobaltBright: Color = Color(0xFF5B8FDB)
+
     /* Status */
     val Red: Color = Color(0xFFD2564C)
     val RedDeep: Color = Color(0xFFB4443A)
@@ -90,7 +95,7 @@ public object TicTacColorsDark : TicTacColors {
     override val positive: Color = TicTacPalette.Green
     override val negative: Color = TicTacPalette.Red
 
-    override val markX: Color = TicTacPalette.Mist
+    override val markX: Color = TicTacPalette.CobaltBright
     override val markO: Color = TicTacPalette.Green
     override val boardGrid: Color = TicTacPalette.Steel
     override val boardCell: Color = TicTacPalette.Gunmetal
@@ -114,7 +119,7 @@ public object TicTacColorsLight : TicTacColors {
     override val positive: Color = TicTacPalette.GreenDeep
     override val negative: Color = TicTacPalette.RedDeep
 
-    override val markX: Color = TicTacPalette.Charcoal
+    override val markX: Color = TicTacPalette.Cobalt
     override val markO: Color = TicTacPalette.GreenDeep
     override val boardGrid: Color = TicTacPalette.CloudLine
     override val boardCell: Color = TicTacPalette.CloudPure

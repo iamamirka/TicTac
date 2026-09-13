@@ -3,8 +3,7 @@ package com.tictac.domain.model
 /** A player's mark. */
 public enum class Mark {
     X,
-    O,
-    ;
+    O;
 
     public fun opponent(): Mark = if (this == X) O else X
 }
