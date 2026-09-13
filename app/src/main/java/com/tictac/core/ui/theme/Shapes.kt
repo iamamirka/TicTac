@@ -16,7 +16,7 @@ public data class TicTacShapes(
     val large: CornerBasedShape = RoundedCornerShape(24.dp),
     val card: CornerBasedShape = RoundedCornerShape(20.dp),
     /** One cell of the 3x3 board. */
-    val boardCell: CornerBasedShape = RoundedCornerShape(12.dp),
+    val boardCell: CornerBasedShape = RoundedCornerShape(20.dp),
     /** Pill button. */
     val button: CornerBasedShape = RoundedCornerShape(percent = 50),
 )
