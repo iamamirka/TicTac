@@ -90,19 +90,19 @@ internal fun MainScreenContent(
                     onSelect = { onIntent(MainIntent.GameModeSelected(it)) },
                     modifier = Modifier.controlWidth(),
                 )
+
+                FieldSizeControl(
+                    options = FieldSizeUi.entries,
+                    selected = state.fieldSize,
+                    onSelect = { onIntent(MainIntent.FieldSizeSelected(it)) },
+                    modifier = Modifier.controlWidth(),
+                )
+
                 TicTacSegmentedControl(
                     options = BotDifficultyUi.entries,
                     selected = state.botDifficulty,
                     onSelect = { onIntent(MainIntent.DifficultySelected(it)) },
                     enabled = state.isDifficultyEnabled,
-                    modifier = Modifier.controlWidth(),
-                )
-
-                SectionLabel(text = "Field size")
-                FieldSizeControl(
-                    options = FieldSizeUi.entries,
-                    selected = state.fieldSize,
-                    onSelect = { onIntent(MainIntent.FieldSizeSelected(it)) },
                     modifier = Modifier.controlWidth(),
                 )
 
