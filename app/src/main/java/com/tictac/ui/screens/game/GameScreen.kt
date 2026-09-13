@@ -6,8 +6,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -18,7 +22,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -31,11 +37,16 @@ import com.tictac.ui.components.TicTacButton
 
 @Composable
 internal fun GameScreen(
+    boardSize: Int = GameBoard.DEFAULT_SIZE,
     modifier: Modifier = Modifier,
     viewModel: GameViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    LaunchedEffect(boardSize) {
+        viewModel.onIntent(GameIntent.BoardSizeSelected(boardSize))
+    }
 
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
@@ -177,25 +188,60 @@ private fun Board(
     modifier: Modifier = Modifier,
 ) {
     val winningLine = state.winningLine
+    val size = state.board.size
+    val metrics = boardMetricsFor(size)
     Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier
+            .widthIn(max = MAX_BOARD_WIDTH)
+            .fillMaxWidth()
+            .aspectRatio(1f),
+        verticalArrangement = Arrangement.spacedBy(metrics.spacing),
     ) {
-        repeat(GameBoard.SIZE) { row ->
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                repeat(GameBoard.SIZE) { column ->
-                    val index = row * GameBoard.SIZE + column
+        repeat(size) { row ->
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(metrics.spacing),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(1f),
+            ) {
+                repeat(size) { column ->
+                    val index = row * size + column
                     TicTacBoardCell(
                         mark = state.board.markAt(index),
                         onClick = { onCellClick(index) },
                         isWinning = index in winningLine,
                         enabled = !state.isFinished,
+                        markStyle = metrics.markStyle,
+                        borderWidth = metrics.borderWidth,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .weight(1f),
                     )
                 }
             }
         }
     }
 }
+
+private class BoardMetrics(
+    val spacing: Dp,
+    val borderWidth: Dp,
+    val markStyle: TextStyle,
+)
+
+/** Gaps, borders and glyphs all have to shrink as the board gets denser. */
+@Composable
+private fun boardMetricsFor(size: Int): BoardMetrics {
+    val typography = TicTacTheme.typography
+    return when {
+        size <= 3 -> BoardMetrics(8.dp, 2.dp, typography.mark)
+        size <= 6 -> BoardMetrics(4.dp, 1.dp, typography.display)
+        size <= 9 -> BoardMetrics(3.dp, 1.dp, typography.titleLarge)
+        else -> BoardMetrics(2.dp, 1.dp, typography.label)
+    }
+}
+
+private val MAX_BOARD_WIDTH = 400.dp
 
 @PreviewLightDark
 @Composable
@@ -235,6 +281,22 @@ private fun GameScreenWinPreview() {
                 result = GameResult.Win(Mark.X, listOf(0, 1, 2)),
                 scoreX = 2,
                 scoreO = 2,
+            ),
+            onIntent = {},
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun GameScreenLargeBoardPreview() {
+    TicTacTheme {
+        GameScreenContent(
+            state = GameUiState(
+                board = GameBoard.empty(size = 12)
+                    .withMark(0, Mark.X)
+                    .withMark(13, Mark.O)
+                    .withMark(26, Mark.X),
             ),
             onIntent = {},
         )

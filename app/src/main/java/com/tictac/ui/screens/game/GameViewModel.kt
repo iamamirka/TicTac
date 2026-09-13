@@ -18,8 +18,21 @@ internal class GameViewModel @Inject constructor(
     override fun onIntent(intent: GameIntent) {
         when (intent) {
             is GameIntent.CellClicked -> onCellClicked(intent.index)
+            is GameIntent.BoardSizeSelected -> onBoardSizeSelected(intent.size)
             GameIntent.NewGameClicked -> onNewGame()
             GameIntent.ResetScoreClicked -> updateState { copy(scoreX = 0, scoreO = 0) }
+        }
+    }
+
+    /** Idempotent, so re-entering the screen does not wipe a round of the same size. */
+    private fun onBoardSizeSelected(size: Int) {
+        if (state.value.board.size == size) return
+        updateState {
+            copy(
+                board = GameBoard.empty(size),
+                currentTurn = Mark.X,
+                result = GameResult.InProgress,
+            )
         }
     }
 
@@ -58,7 +71,7 @@ internal class GameViewModel @Inject constructor(
         }
         updateState {
             copy(
-                board = GameBoard(),
+                board = GameBoard.empty(board.size),
                 currentTurn = opener,
                 result = GameResult.InProgress,
             )

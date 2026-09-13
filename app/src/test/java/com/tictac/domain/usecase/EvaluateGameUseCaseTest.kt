@@ -10,18 +10,16 @@ class EvaluateGameUseCaseTest {
 
     private val evaluate = EvaluateGameUseCase()
 
-    private fun boardOf(pattern: String): GameBoard {
-        require(pattern.length == GameBoard.CELL_COUNT) { "pattern must be 9 chars" }
-        return GameBoard(
-            pattern.map { char ->
-                when (char) {
-                    'X' -> Mark.X
-                    'O' -> Mark.O
-                    else -> null
-                }
-            },
-        )
-    }
+    /** One char per cell, row-major; the side is derived from the length. */
+    private fun boardOf(pattern: String): GameBoard = GameBoard(
+        pattern.map { char ->
+            when (char) {
+                'X' -> Mark.X
+                'O' -> Mark.O
+                else -> null
+            }
+        },
+    )
 
     @Test
     fun `empty board is in progress`() {
@@ -76,5 +74,30 @@ class EvaluateGameUseCaseTest {
     @Test
     fun `full board without a line is a draw`() {
         assertEquals(GameResult.Draw, evaluate(boardOf("XXOOOXXOX")))
+    }
+
+    @Test
+    fun `five in a row wins on a 6x6 board`() {
+        val board = boardOf("XXXXX-" + "------".repeat(5))
+        assertEquals(GameResult.Win(Mark.X, listOf(0, 1, 2, 3, 4)), evaluate(board))
+    }
+
+    @Test
+    fun `five in a column wins on a 6x6 board`() {
+        val board = boardOf("X-----".repeat(5) + "------")
+        assertEquals(GameResult.Win(Mark.X, listOf(0, 6, 12, 18, 24)), evaluate(board))
+    }
+
+    @Test
+    fun `four in a row is not enough on a 6x6 board`() {
+        val board = boardOf("XXXX--" + "------".repeat(5))
+        assertEquals(GameResult.InProgress, evaluate(board))
+    }
+
+    @Test
+    fun `a line does not wrap across rows`() {
+        // Last two of row 0 and first three of row 1 are contiguous by index, not by geometry.
+        val board = boardOf("----XX" + "XXX---" + "------".repeat(4))
+        assertEquals(GameResult.InProgress, evaluate(board))
     }
 }

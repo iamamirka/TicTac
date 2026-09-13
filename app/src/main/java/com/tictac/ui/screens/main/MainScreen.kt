@@ -37,7 +37,7 @@ import com.tictac.ui.model.GameModeUi
 
 @Composable
 internal fun MainScreen(
-    onNavigateToGame: (GameMode, BotDifficulty) -> Unit,
+    onNavigateToGame: (GameMode, BotDifficulty, Int) -> Unit,
     onNavigateToSettings: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: MainViewModel = hiltViewModel(),
@@ -48,7 +48,7 @@ internal fun MainScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is MainEffect.NavigateToGame ->
-                    onNavigateToGame(effect.gameMode, effect.botDifficulty)
+                    onNavigateToGame(effect.gameMode, effect.botDifficulty, effect.boardSize)
 
                 MainEffect.NavigateToSettings -> onNavigateToSettings()
             }

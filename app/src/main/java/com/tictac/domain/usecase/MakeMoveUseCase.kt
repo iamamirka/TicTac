@@ -8,7 +8,7 @@ import javax.inject.Inject
 public class MakeMoveUseCase @Inject constructor() {
 
     public operator fun invoke(board: GameBoard, index: Int, mark: Mark): GameBoard? {
-        if (index !in 0 until GameBoard.CELL_COUNT) return null
+        if (index !in 0 until board.cellCount) return null
         if (!board.isFreeAt(index)) return null
         return board.withMark(index, mark)
     }

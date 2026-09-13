@@ -29,6 +29,7 @@ internal sealed interface MainEffect {
     data class NavigateToGame(
         val gameMode: GameMode,
         val botDifficulty: BotDifficulty,
+        val boardSize: Int,
     ) : MainEffect
 
     data object NavigateToSettings : MainEffect

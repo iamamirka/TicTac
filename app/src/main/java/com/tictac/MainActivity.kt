@@ -10,12 +10,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.tictac.core.ui.theme.TicTacTheme
 import com.tictac.domain.model.BotDifficulty
+import com.tictac.domain.model.GameBoard
 import com.tictac.domain.model.GameMode
 import com.tictac.ui.screens.game.GameScreen
 import com.tictac.ui.screens.main.MainScreen
@@ -47,17 +49,21 @@ private enum class Screen {
 @Composable
 private fun TicTacApp(modifier: Modifier = Modifier) {
     var screen by rememberSaveable { mutableStateOf(Screen.Main) }
+    var boardSize by rememberSaveable { mutableIntStateOf(GameBoard.DEFAULT_SIZE) }
 
     BackHandler(enabled = screen != Screen.Main) { screen = Screen.Main }
 
     when (screen) {
         Screen.Main -> MainScreen(
-            onNavigateToGame = { _: GameMode, _: BotDifficulty -> screen = Screen.Game },
+            onNavigateToGame = { _: GameMode, _: BotDifficulty, selectedSize: Int ->
+                boardSize = selectedSize
+                screen = Screen.Game
+            },
             onNavigateToSettings = { screen = Screen.Settings },
             modifier = modifier,
         )
 
-        Screen.Game -> GameScreen(modifier = modifier)
+        Screen.Game -> GameScreen(boardSize = boardSize, modifier = modifier)
 
         Screen.Settings -> SettingsScreen(
             onNavigateBack = { screen = Screen.Main },

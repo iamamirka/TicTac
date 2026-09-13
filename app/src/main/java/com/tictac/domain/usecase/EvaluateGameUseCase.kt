@@ -8,7 +8,7 @@ import javax.inject.Inject
 public class EvaluateGameUseCase @Inject constructor() {
 
     public operator fun invoke(board: GameBoard): GameResult {
-        for (line in GameBoard.WINNING_LINES) {
+        for (line in board.winningLines) {
             val first = board.markAt(line[0]) ?: continue
             if (line.all { board.markAt(it) == first }) {
                 return GameResult.Win(mark = first, line = line)

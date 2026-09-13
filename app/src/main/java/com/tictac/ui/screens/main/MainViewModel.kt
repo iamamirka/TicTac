@@ -24,6 +24,7 @@ internal class MainViewModel @Inject constructor() :
             MainEffect.NavigateToGame(
                 gameMode = uiState.gameMode.domain,
                 botDifficulty = uiState.botDifficulty.domain,
+                boardSize = uiState.fieldSize.cells,
             ),
         )
     }

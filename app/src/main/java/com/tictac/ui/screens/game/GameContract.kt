@@ -20,6 +20,9 @@ internal data class GameUiState(
 
 internal sealed interface GameIntent {
     data class CellClicked(val index: Int) : GameIntent
+
+    /** Sent when the screen opens; starts a fresh board unless one of that size is already in play. */
+    data class BoardSizeSelected(val size: Int) : GameIntent
     data object NewGameClicked : GameIntent
     data object ResetScoreClicked : GameIntent
 }
