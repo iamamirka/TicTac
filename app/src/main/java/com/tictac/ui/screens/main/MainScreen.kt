@@ -2,9 +2,8 @@ package com.tictac.ui.screens.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -123,33 +122,35 @@ internal fun MainScreenContent(
 private fun TopBar(
     onNavigateToSettings: () -> Unit,
 ) {
-    Row(
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically,
+    // Box, not a Row with weighted spacers: the coin button and the settings button
+    // have different widths, so equal spacers would centre the title between them
+    // rather than on the screen.
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
+        Text(
+            text = "Game",
+            style = TicTacTheme.typography.titleMedium,
+            color = TicTacTheme.colors.surface,
+        )
         TicTacButton(
             text = "100",
             leadingIcon = painterResource(R.drawable.ic_coin1x_16),
             size = TicTacButtonSize.S,
             mode = TicTacButtonMode.Secondary,
             onClick = {},
+            modifier = Modifier.align(Alignment.CenterStart),
         )
-        Spacer(modifier = Modifier.weight(1f))
-        Text(
-            text = "Game",
-            style = TicTacTheme.typography.titleMedium,
-            color = TicTacTheme.colors.surface,
-        )
-        Spacer(modifier = Modifier.weight(1f))
         TicTacButton(
             icon = painterResource(R.drawable.ic_settings_24),
             contentDescription = "Settings",
             size = TicTacButtonSize.S,
             mode = TicTacButtonMode.Secondary,
-            onClick = onNavigateToSettings
+            onClick = onNavigateToSettings,
+            modifier = Modifier.align(Alignment.CenterEnd),
         )
     }
 }
