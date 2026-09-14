@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.shape.CornerBasedShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -25,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -40,6 +43,7 @@ import com.tictac.ui.components.TicTacButton
 import com.tictac.ui.components.TicTacButtonMode
 import com.tictac.ui.components.TicTacButtonSize
 import com.tictac.ui.components.TicTacMarkSize
+import com.tictac.ui.model.PlayerType
 
 @Composable
 internal fun GameScreen(
@@ -88,12 +92,6 @@ internal fun GameScreenContent(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterVertically),
             ) {
-                Text(
-                    text = "TicTac",
-                    style = TicTacTheme.typography.display,
-                    color = TicTacTheme.colors.onBackground,
-                )
-
                 ScoreRow(
                     scoreX = state.scoreX,
                     scoreO = state.scoreO,
@@ -129,26 +127,43 @@ private fun ScoreRow(
     modifier: Modifier = Modifier,
 ) {
     val colors = TicTacTheme.colors
-    Row(
-        modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(12.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = "X $scoreX",
-            style = TicTacTheme.typography.titleMedium,
-            color = colors.markX,
-        )
-        Text(
-            text = "-",
-            style = TicTacTheme.typography.titleMedium,
-            color = colors.onSurfaceVariant,
-        )
-        Text(
-            text = "$scoreO O",
-            style = TicTacTheme.typography.titleMedium,
-            color = colors.markO,
-        )
+        Row(
+            modifier = modifier,
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            PlayerLabel(
+                playerType = PlayerType.PLAYER
+            )
+            Text(
+                text = "$scoreX",
+                style = TicTacTheme.typography.headlineXL,
+                color = colors.markX,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.size(48.dp),
+            )
+            Text(
+                text = ":",
+                style = TicTacTheme.typography.headlineXL,
+                color = colors.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.size(48.dp),
+            )
+            Text(
+                text = "$scoreO",
+                style = TicTacTheme.typography.headlineXL,
+                color = colors.markO,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.size(48.dp),
+            )
+            PlayerLabel(
+                playerType = PlayerType.PLAYER
+            )
+        }
         Text(
             text = "reset",
             style = TicTacTheme.typography.label,
@@ -157,6 +172,27 @@ private fun ScoreRow(
                 .clip(TicTacTheme.shapes.small)
                 .clickable(onClick = onResetScore)
                 .padding(horizontal = 8.dp, vertical = 4.dp),
+        )
+    }
+}
+
+@Composable
+private fun PlayerLabel(
+    playerType: PlayerType,
+) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            painter = painterResource( if (playerType == PlayerType.PLAYER) R.drawable.ic_user_24 else R.drawable.ic_bot_24),
+            tint = TicTacTheme.colors.onSurfaceVariant,
+            contentDescription = "",
+        )
+        Text(
+            text = playerType.text(),
+            style = TicTacTheme.typography.bodyMedium,
+            color = TicTacTheme.colors.onSurfaceVariant,
         )
     }
 }
