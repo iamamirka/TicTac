@@ -6,13 +6,18 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -85,7 +90,7 @@ internal fun GameScreenContent(
         topBar = { TopBar(onNavigateToSettings = {}) },
         content = { innerPadding ->
             Column(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxSize()
                     .padding(innerPadding)
                     .padding(24.dp),
@@ -118,6 +123,10 @@ internal fun GameScreenContent(
                 hostState = snackbarHostState,
             )
         },
+        // The top bar pads its own top inset, so leave the sides and bottom to the Scaffold.
+        contentWindowInsets = WindowInsets.safeDrawing
+            .only(WindowInsetsSides.Horizontal + WindowInsetsSides.Bottom),
+        modifier = modifier.fillMaxSize(),
     )
 }
 
@@ -235,6 +244,11 @@ private fun TopBar(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .fillMaxWidth()
+            .windowInsetsPadding(
+                WindowInsets.safeDrawing.only(
+                    WindowInsetsSides.Top + WindowInsetsSides.Horizontal,
+                ),
+            )
             .padding(horizontal = 16.dp)
     ) {
         Text(
