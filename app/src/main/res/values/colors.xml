@@ -1,4 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="ic_launcher_background">#121414</color>
+
+    <!-- Splash tokens. These mirror TicTacColorsLight, which the Compose theme cannot
+         reach: the splash is drawn by the system before any Composable exists. Keep the
+         values in step with Color.kt. -->
+    <!-- TicTacPalette.Cloud - colors.background -->
+    <color name="splash_background">#F4F6F6</color>
+    <!-- TicTacPalette.CloudLine - colors.boardGrid -->
+    <color name="splash_grid">#C9D0D0</color>
+    <!-- TicTacPalette.Cobalt - colors.markX -->
+    <color name="splash_mark_x">#376AB8</color>
+    <!-- TicTacPalette.GreenDeep - colors.markO -->
+    <color name="splash_mark_o">#3A7F4E</color>
 </resources>

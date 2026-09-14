@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Splash tokens, dark. Mirrors TicTacColorsDark - see values/colors.xml. -->
+    <!-- TicTacPalette.Charcoal - colors.background -->
+    <color name="splash_background">#121414</color>
+    <!-- TicTacPalette.Steel - colors.boardGrid -->
+    <color name="splash_grid">#252929</color>
+    <!-- TicTacPalette.CobaltBright - colors.markX -->
+    <color name="splash_mark_x">#5B8FDB</color>
+    <!-- TicTacPalette.Green - colors.markO -->
+    <color name="splash_mark_o">#4B9760</color>
+</resources>

@@ -1,3 +1,17 @@
 <resources>
-    <style name="Theme.TicTac" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.TicTac" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Without this the window starts white and flashes before Compose draws. -->
+        <item name="android:windowBackground">@color/splash_background</item>
+    </style>
+
+    <!--
+      The launch theme. androidx.core.splashscreen backports the Android 12 splash to
+      minSdk 30, so there is one splash on every supported version instead of a blank
+      window on 30 and a system splash on 31+.
+    -->
+    <style name="Theme.TicTac.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_logo</item>
+        <item name="postSplashScreenTheme">@style/Theme.TicTac</item>
+    </style>
 </resources>

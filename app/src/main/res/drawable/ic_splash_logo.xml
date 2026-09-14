@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The splash icon. 288x288 is the canvas the system hands an icon with no icon
+     background; everything stays inside the central 192x192 so no launcher masks
+     it. Colors come from resources, so values-night swaps them with the theme. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="288dp"
+    android:height="288dp"
+    android:viewportWidth="288"
+    android:viewportHeight="288">
+    <!-- 3x3 grid: a 144pt board from 72 to 216, interior lines at 120 and 168 -->
+    <path
+        android:pathData="M120,72 L120,216 M168,72 L168,216 M72,120 L216,120 M72,168 L216,168"
+        android:strokeColor="@color/splash_grid"
+        android:strokeWidth="8"
+        android:strokeLineCap="round" />
+    <!-- X in the top-left cell -->
+    <path
+        android:pathData="M82,82 L110,110 M110,82 L82,110"
+        android:strokeColor="@color/splash_mark_x"
+        android:strokeWidth="12"
+        android:strokeLineCap="round" />
+    <!-- O in the bottom-right cell -->
+    <path
+        android:pathData="M176,192 a16,16 0 1,1 32,0 a16,16 0 1,1 -32,0"
+        android:strokeColor="@color/splash_mark_o"
+        android:strokeWidth="12"
+        android:fillColor="#00000000"
+        android:strokeLineCap="round" />
+</vector>
