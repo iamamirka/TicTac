@@ -132,7 +132,7 @@ private fun TopBar(
             .padding(horizontal = 16.dp)
     ) {
         Text(
-            text = "Game",
+            text = "Why are you Game?",
             style = TicTacTheme.typography.titleMedium,
             color = TicTacTheme.colors.surface,
         )
