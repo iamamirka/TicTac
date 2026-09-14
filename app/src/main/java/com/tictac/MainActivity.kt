@@ -70,7 +70,12 @@ private fun TicTacApp(modifier: Modifier = Modifier) {
             modifier = modifier,
         )
 
-        Screen.Game -> GameScreen(boardSize = boardSize, modifier = modifier)
+        Screen.Game -> GameScreen(
+            onNavigateBack = { screen = Screen.Main },
+            onNavigateToSettings = { screen = Screen.Settings },
+            boardSize = boardSize,
+            modifier = modifier,
+        )
 
         Screen.Settings -> SettingsScreen(
             onNavigateBack = { screen = Screen.Main },

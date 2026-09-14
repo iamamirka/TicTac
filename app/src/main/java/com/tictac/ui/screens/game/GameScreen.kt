@@ -52,6 +52,8 @@ import com.tictac.ui.model.PlayerType
 
 @Composable
 internal fun GameScreen(
+    onNavigateBack: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     boardSize: Int = GameBoard.DEFAULT_SIZE,
     modifier: Modifier = Modifier,
     viewModel: GameViewModel = hiltViewModel(),
@@ -74,6 +76,8 @@ internal fun GameScreen(
     GameScreenContent(
         state = state,
         onIntent = viewModel::onIntent,
+        onNavigateBack = onNavigateBack,
+        onNavigateToSettings = onNavigateToSettings,
         snackbarHostState = snackbarHostState,
         modifier = modifier,
     )
@@ -83,11 +87,18 @@ internal fun GameScreen(
 internal fun GameScreenContent(
     state: GameUiState,
     onIntent: (GameIntent) -> Unit,
+    onNavigateBack: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
 ) {
     Scaffold(
-        topBar = { TopBar(onNavigateToSettings = {}) },
+        topBar = {
+            TopBar(
+                onNavigateBack = onNavigateBack,
+                onNavigateToSettings = onNavigateToSettings,
+            )
+        },
         content = { innerPadding ->
             Column(
                 modifier = Modifier
@@ -235,11 +246,11 @@ private fun StatusLine(
 
 @Composable
 private fun TopBar(
+    onNavigateBack: () -> Unit,
     onNavigateToSettings: () -> Unit,
 ) {
-    // Box, not a Row with weighted spacers: the coin button and the settings button
-    // have different widths, so equal spacers would centre the title between them
-    // rather than on the screen.
+    // Box, not a Row with weighted spacers: the title has to sit on the screen's
+    // centre line, not centred between the two buttons.
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
@@ -257,11 +268,11 @@ private fun TopBar(
             color = TicTacTheme.colors.surface,
         )
         TicTacButton(
-            text = "100",
-            leadingIcon = painterResource(R.drawable.ic_coin1x_16),
+            icon = painterResource(R.drawable.ic_chevron_left_24),
+            contentDescription = "Back",
             size = TicTacButtonSize.S,
             mode = TicTacButtonMode.Secondary,
-            onClick = {},
+            onClick = onNavigateBack,
             modifier = Modifier.align(Alignment.CenterStart),
         )
         TicTacButton(
@@ -373,6 +384,8 @@ private fun GameScreenInProgressPreview() {
                 scoreO = 2,
             ),
             onIntent = {},
+            onNavigateBack = {},
+            onNavigateToSettings = {},
         )
     }
 }
@@ -395,6 +408,8 @@ private fun GameScreenWinPreview() {
                 scoreO = 2,
             ),
             onIntent = {},
+            onNavigateBack = {},
+            onNavigateToSettings = {},
         )
     }
 }
@@ -411,6 +426,8 @@ private fun GameScreenLargeBoardPreview() {
                     .withMark(26, Mark.X),
             ),
             onIntent = {},
+            onNavigateBack = {},
+            onNavigateToSettings = {},
         )
     }
 }
