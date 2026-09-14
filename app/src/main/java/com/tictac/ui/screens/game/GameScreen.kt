@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -24,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -39,6 +39,7 @@ import com.tictac.ui.components.TicTacBoardCell
 import com.tictac.ui.components.TicTacButton
 import com.tictac.ui.components.TicTacButtonMode
 import com.tictac.ui.components.TicTacButtonSize
+import com.tictac.ui.components.TicTacMarkSize
 
 @Composable
 internal fun GameScreen(
@@ -228,7 +229,6 @@ private fun Board(
     onCellClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val winningLine = state.winningLine
     val size = state.board.size
     val metrics = boardMetricsFor(size)
     Column(
@@ -250,10 +250,10 @@ private fun Board(
                     TicTacBoardCell(
                         mark = state.board.markAt(index),
                         onClick = { onCellClick(index) },
-                        isWinning = index in winningLine,
                         enabled = !state.isFinished,
-                        markStyle = metrics.markStyle,
                         borderWidth = metrics.borderWidth,
+                        shape = metrics.cellShape,
+                        markSize = metrics.markSize,
                         modifier = Modifier
                             .fillMaxHeight()
                             .weight(1f),
@@ -267,18 +267,19 @@ private fun Board(
 private class BoardMetrics(
     val spacing: Dp,
     val borderWidth: Dp,
-    val markStyle: TextStyle,
+    val cellShape: CornerBasedShape,
+    val markSize: TicTacMarkSize,
 )
 
-/** Gaps, borders and glyphs all have to shrink as the board gets denser. */
+/** Gaps, borders, corners and glyphs all have to shrink as the board gets denser. */
 @Composable
 private fun boardMetricsFor(size: Int): BoardMetrics {
-    val typography = TicTacTheme.typography
+    val shapes = TicTacTheme.shapes
     return when {
-        size <= 3 -> BoardMetrics(8.dp, 2.dp, typography.mark)
-        size <= 6 -> BoardMetrics(4.dp, 1.dp, typography.display)
-        size <= 9 -> BoardMetrics(3.dp, 1.dp, typography.titleLarge)
-        else -> BoardMetrics(2.dp, 1.dp, typography.label)
+        size <= 3 -> BoardMetrics(8.dp, 2.dp, shapes.boardCellLarge, TicTacMarkSize.L)
+        size <= 6 -> BoardMetrics(4.dp, 1.dp, shapes.boardCellMedium, TicTacMarkSize.M)
+        size <= 9 -> BoardMetrics(5.dp, 1.dp, shapes.boardCellSmall, TicTacMarkSize.S)
+        else -> BoardMetrics(4.dp, 1.dp, shapes.boardCellSmall, TicTacMarkSize.S)
     }
 }
 

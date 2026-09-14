@@ -3,8 +3,12 @@ package com.tictac.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,11 +18,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.tictac.R
 import com.tictac.core.ui.theme.TicTacTheme
 import com.tictac.domain.model.Mark
 
@@ -31,10 +33,10 @@ public fun TicTacBoardCell(
     mark: Mark?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isWinning: Boolean = false,
     enabled: Boolean = true,
-    markStyle: TextStyle = TicTacTheme.typography.mark,
     borderWidth: Dp = 2.dp,
+    shape: CornerBasedShape = TicTacTheme.shapes.boardCellLarge,
+    markSize: TicTacMarkSize = TicTacMarkSize.L,
 ) {
     val colors = TicTacTheme.colors
     val backgroundColor = when(mark) {
@@ -44,12 +46,12 @@ public fun TicTacBoardCell(
     }
     Box(
         modifier = modifier
-            .clip(TicTacTheme.shapes.boardCell)
+            .clip(shape)
             .background(backgroundColor)
             .border(
                 width = borderWidth,
                 color = colors.boardGrid,
-                shape = TicTacTheme.shapes.boardCell,
+                shape = shape,
             )
             .clickable(enabled = enabled && mark == null, onClick = onClick)
             .semantics { contentDescription = mark?.name ?: "empty cell" },
@@ -57,9 +59,10 @@ public fun TicTacBoardCell(
     ) {
         if (mark != null) {
             Icon(
-                painter = painterResource(if (mark == Mark.X) R.drawable.ic_x_48 else R.drawable.ic_o_48),
+                painter = painterResource(markSize.iconFor(mark)),
                 tint = TicTacTheme.colors.onAccent,
                 contentDescription = "",
+                modifier = Modifier.size(markSize.dimension),
             )
         }
     }
@@ -69,6 +72,32 @@ public fun TicTacBoardCell(
 @Composable
 private fun TicTacBoardCellPreview() {
     TicTacTheme {
-        TicTacBoardCell(mark = Mark.X, onClick = {}, modifier = Modifier.size(88.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            TicTacBoardCell(
+                mark = Mark.X,
+                onClick = {},
+                shape = TicTacTheme.shapes.boardCellLarge,
+                markSize = TicTacMarkSize.L,
+                modifier = Modifier.size(88.dp),
+            )
+            TicTacBoardCell(
+                mark = Mark.O,
+                onClick = {},
+                shape = TicTacTheme.shapes.boardCellMedium,
+                markSize = TicTacMarkSize.M,
+                borderWidth = 1.dp,
+                modifier = Modifier.size(48.dp),
+            )
+            TicTacBoardCell(
+                mark = Mark.X,
+                onClick = {},
+                shape = TicTacTheme.shapes.boardCellSmall,
+                markSize = TicTacMarkSize.S,
+                borderWidth = 1.dp,
+                modifier = Modifier.size(28.dp),
+            )
+        }
     }
 }

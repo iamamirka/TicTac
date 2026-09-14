@@ -15,8 +15,14 @@ public data class TicTacShapes(
     val medium: CornerBasedShape = RoundedCornerShape(16.dp),
     val large: CornerBasedShape = RoundedCornerShape(24.dp),
     val card: CornerBasedShape = RoundedCornerShape(20.dp),
-    /** One cell of the 3x3 board. */
-    val boardCell: CornerBasedShape = RoundedCornerShape(20.dp),
+    /* A cell's radius has to shrink with the cell: 20dp on a 3x3 board reads as a
+     * rounded square, but on a 12x12 board it would round the cell away entirely. */
+    /** A cell on a sparse board (3x3). */
+    val boardCellLarge: CornerBasedShape = RoundedCornerShape(20.dp),
+    /** A cell on a mid-density board (up to 6x6). */
+    val boardCellMedium: CornerBasedShape = RoundedCornerShape(12.dp),
+    /** A cell on a dense board (7x7 and up). */
+    val boardCellSmall: CornerBasedShape = RoundedCornerShape(6.dp),
     /** Pill button. */
     val button: CornerBasedShape = RoundedCornerShape(percent = 50),
 )
