@@ -14,8 +14,8 @@ public data class GameBoard(
 
     public val cellCount: Int get() = cells.size
 
-    /** Marks in a row needed to win: the full line on 3x3, [WIN_LENGTH_CAP] on bigger boards. */
-    public val winLength: Int get() = minOf(size, WIN_LENGTH_CAP)
+    /** Marks in a row needed to win - see [winLengthFor]. */
+    public val winLength: Int get() = winLengthFor(size)
 
     /** Every index run of [winLength] that wins on a board this size. */
     public val winningLines: List<List<Int>> get() = winningLinesFor(size)
@@ -32,8 +32,12 @@ public data class GameBoard(
     public companion object {
         public const val DEFAULT_SIZE: Int = 3
 
-        /** Caps the win condition so 9x9 and 12x12 stay winnable instead of needing a full line. */
-        public const val WIN_LENGTH_CAP: Int = 5
+        /**
+         * Marks in a row needed to win on a board of [size]: a full line on 3x3, then one
+         * more mark per size step - 6x6 needs 4, 9x9 needs 5, 12x12 needs 6. A fixed run
+         * would make a big board trivial; a full line would make it unwinnable.
+         */
+        public fun winLengthFor(size: Int): Int = minOf(size, size / 3 + 2)
 
         public fun empty(size: Int): GameBoard = GameBoard(List(size * size) { null })
 
@@ -45,7 +49,7 @@ public data class GameBoard(
 
         /** Row, column, diagonal and anti-diagonal runs that fit inside the board. */
         private fun buildWinningLines(size: Int): List<List<Int>> {
-            val length = minOf(size, WIN_LENGTH_CAP)
+            val length = winLengthFor(size)
             val directions = listOf(0 to 1, 1 to 0, 1 to 1, 1 to -1)
             val lines = mutableListOf<List<Int>>()
             for (row in 0 until size) {

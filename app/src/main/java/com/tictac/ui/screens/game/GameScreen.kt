@@ -105,6 +105,8 @@ internal fun GameScreenContent(
                     onCellClick = { index -> onIntent(GameIntent.CellClicked(index)) },
                 )
 
+                GoalRow(boardSize = state.board.size)
+
                 TicTacButton(
                     text = if (state.isFinished) "New game" else "Restart",
                     onClick = { onIntent(GameIntent.NewGameClicked) },
@@ -257,6 +259,24 @@ private fun TopBar(
             modifier = Modifier.align(Alignment.CenterEnd),
         )
     }
+}
+
+@Composable
+private fun GoalRow(
+    boardSize: Int
+) {
+    val goal = when(boardSize) {
+        3 -> "3"
+        6 -> "4"
+        9 -> "5"
+        12 -> "6"
+        else -> "Ooops"
+    }
+    Text(
+        text = "Collect $goal marks in a row",
+        style = TicTacTheme.typography.bodyLarge,
+        color = TicTacTheme.colors.onSurfaceVariant,
+    )
 }
 
 @Composable

@@ -77,20 +77,44 @@ class EvaluateGameUseCaseTest {
     }
 
     @Test
-    fun `five in a row wins on a 6x6 board`() {
-        val board = boardOf("XXXXX-" + "------".repeat(5))
+    fun `four in a row wins on a 6x6 board`() {
+        val board = boardOf("XXXX--" + "------".repeat(5))
+        assertEquals(GameResult.Win(Mark.X, listOf(0, 1, 2, 3)), evaluate(board))
+    }
+
+    @Test
+    fun `four in a column wins on a 6x6 board`() {
+        val board = boardOf("X-----".repeat(4) + "------".repeat(2))
+        assertEquals(GameResult.Win(Mark.X, listOf(0, 6, 12, 18)), evaluate(board))
+    }
+
+    @Test
+    fun `three in a row is not enough on a 6x6 board`() {
+        val board = boardOf("XXX---" + "------".repeat(5))
+        assertEquals(GameResult.InProgress, evaluate(board))
+    }
+
+    @Test
+    fun `five in a row wins on a 9x9 board`() {
+        val board = boardOf("XXXXX----" + "---------".repeat(8))
         assertEquals(GameResult.Win(Mark.X, listOf(0, 1, 2, 3, 4)), evaluate(board))
     }
 
     @Test
-    fun `five in a column wins on a 6x6 board`() {
-        val board = boardOf("X-----".repeat(5) + "------")
-        assertEquals(GameResult.Win(Mark.X, listOf(0, 6, 12, 18, 24)), evaluate(board))
+    fun `four in a row is not enough on a 9x9 board`() {
+        val board = boardOf("XXXX-----" + "---------".repeat(8))
+        assertEquals(GameResult.InProgress, evaluate(board))
     }
 
     @Test
-    fun `four in a row is not enough on a 6x6 board`() {
-        val board = boardOf("XXXX--" + "------".repeat(5))
+    fun `six in a row wins on a 12x12 board`() {
+        val board = boardOf("XXXXXX------" + "------------".repeat(11))
+        assertEquals(GameResult.Win(Mark.X, listOf(0, 1, 2, 3, 4, 5)), evaluate(board))
+    }
+
+    @Test
+    fun `five in a row is not enough on a 12x12 board`() {
+        val board = boardOf("XXXXX-------" + "------------".repeat(11))
         assertEquals(GameResult.InProgress, evaluate(board))
     }
 
